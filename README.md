@@ -12,4 +12,7 @@ Pack your images to sprite sheet.
 <br/><br/>
 2- Open the .exe or if unity open SpritePacker under Window menu select the best scale and press export choose the folder where you images are and SpritePacker will pack them for you.
 <hr>
+<h3>Credits</h3>
+A <strong>BIG</strong> thank you goes to the great <a href="https://www.facebook.com/semsem707">"Mohamed Khaled"</a> for his efforts to make this works.
+<hr>
 <h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PNMQS5VVZA9VS">Donate via Paypal</a></h4>
