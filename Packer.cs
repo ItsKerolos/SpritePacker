@@ -18,6 +18,10 @@ namespace SpritePacker
     {
         public int[] Sizes = new int[]
         {
+            32,
+            64,
+            128,
+            256,
             512,
             1024,
             2048,
@@ -25,14 +29,11 @@ namespace SpritePacker
             8192,
         };
 
-        public float[] Scales = new float[]
+        public List<float> Scales = new List<float>
         {
             0.25f,
             0.5f,
             1,
-            //2,
-            //3,
-            //4,
         };
 
         string[] args;
@@ -53,12 +54,12 @@ namespace SpritePacker
 
         private void Packer_AfterShown(object sender, EventArgs e)
         {
-            LockControls();
-
             isUnity = true;
             args = args.Select((s) => s.Remove(0, 1)).ToArray();
             float scale = float.Parse(args[2]);
-            comboBox2.SelectedItem = args[2];
+            comboBox2.SelectedIndex = Scales.IndexOf(scale);
+
+            Refresh();
 
             Export(args[0], args[1], scale);
         }
@@ -105,20 +106,13 @@ namespace SpritePacker
             textBox2.AppendText(text.ToString() + "\n");
         }
 
-        private void AddText(object[] text)
-        {
-            for (int i = 0; i < text.Length; i++)
-            {
-                textBox2.AppendText(text[i].ToString() + "\n");
-            }
-        }
-
         private void Error(string message)
         {
             if (!isUnity)
             {
                 UnlockControls();
                 AddText("Error: " + message);
+                System.Media.SystemSounds.Hand.Play();
             }
             else
             {
@@ -141,7 +135,7 @@ namespace SpritePacker
 
             try
             {
-                List<Bitmap> imagesBitmaps = new List<Bitmap>();
+                List<SpriteInfo> spriteInfos = new List<SpriteInfo>();
                 AddText("Optimizing Images..");
 
                 for (int i = 0; i < imagesPath.Length; i++)
@@ -152,11 +146,11 @@ namespace SpritePacker
 
                     if (bmp.Width > 0 && bmp.Height > 0)
                     {
-                        imagesBitmaps.Add(bmp);
+                        spriteInfos.Add(new SpriteInfo() { name = Path.GetFileNameWithoutExtension(imagesPath[i]), image = bmp });
                     }
                 }
 
-                if (imagesBitmaps.Count <= 0)
+                if (spriteInfos.Count <= 0)
                 {
                     Error("this folder contains no vaild images!");
                     return;
@@ -164,47 +158,49 @@ namespace SpritePacker
 
                 AddText("Creating Sprite Sheet..");
 
-                Dictionary<Bitmap, AtlasItem> imagesAtlas = new Dictionary<Bitmap, AtlasItem>();
-
                 int width = 0;
                 int height = 0;
+                int padding = 2;
                 int tallestHeight = 0;
 
-                int columnCount = GetColumnCount(imagesBitmaps);
-                AddText(columnCount);
+                int columnCount = GetColumnCount(spriteInfos);
                 int itemIndex = 0;
 
                 Bitmap spriteSheet = new Bitmap(8192, 8192);
-                for (int i = 0; i < imagesBitmaps.Count; i++)
+                for (int i = 0; i < spriteInfos.Count; i++)
                 {
                     if (itemIndex < columnCount)
                     {
-                        width += imagesBitmaps[i].Width;
                         itemIndex += 1;
-                        if (tallestHeight < imagesBitmaps[i].Height)
-                            tallestHeight = imagesBitmaps[i].Height;
+                        if (tallestHeight < spriteInfos[i].image.Height)
+                            tallestHeight = spriteInfos[i].image.Height;
 
-                        imagesAtlas.Add(imagesBitmaps[i], new AtlasItem(width, height, new Vertex()));
-
-                        DrawImage(spriteSheet, imagesBitmaps[i], new Point(width, height));
+                        width += spriteInfos[i].image.Width + padding;
                     }
                     else if (itemIndex >= columnCount)
                     {
                         itemIndex = 1;
                         width = 0;
                         height += tallestHeight;
-                        tallestHeight = 0;
+                        tallestHeight = spriteInfos[i].image.Height;
 
-                        width += imagesBitmaps[i].Width;
-                        imagesAtlas.Add(imagesBitmaps[i], new AtlasItem(width, height, new Vertex()));
-
-                        DrawImage(spriteSheet, imagesBitmaps[i], new Point(width, height));
+                        width += spriteInfos[i].image.Width + padding;
                     }
+
+                    spriteInfos[i].width = spriteInfos[i].image.Width + padding;
+                    spriteInfos[i].height = spriteInfos[i].image.Height;
+
+                    DrawImage(spriteSheet, spriteInfos[i].image, new Point(width, height));
                 }
 
                 spriteSheet = OptimizeImage(spriteSheet, 1);
-                int bestSize = Sizes.FirstOrDefault((i) => spriteSheet.Width < i && spriteSheet.Height < i);
-                spriteSheet = ResizeImage(spriteSheet, bestSize);
+                int bestSize = Sizes.FirstOrDefault((i) => spriteSheet.Width <= i && spriteSheet.Height <= i);
+
+                if(bestSize > 1)
+                {
+                    AddText("Sprite Sheet Size: " + bestSize);
+                    spriteSheet = ResizeImage(spriteSheet, bestSize);
+                }
 
                 AddText("Saving Sprite Sheet..");
 
@@ -212,6 +208,31 @@ namespace SpritePacker
                     File.Delete(savePath);
 
                 spriteSheet.Save(savePath, ImageFormat.Png);
+
+                if (isUnity)
+                {
+                    AddText("Creating Atlas for Unity Sprite..");
+
+                    System.Text.StringBuilder unityOutput = new System.Text.StringBuilder();
+
+                    unityOutput.Append(spriteSheet.Width);
+                    unityOutput.Append("&&");
+                    unityOutput.Append(columnCount);
+                    unityOutput.Append("&&");
+
+                    for (int i = 0; i < spriteInfos.Count; i++)
+                    {
+                        unityOutput.Append(spriteInfos[i].name + ";");
+                        unityOutput.Append(spriteInfos[i].width + "," + spriteInfos[i].height);
+
+                        if(i != spriteInfos.Count - 1)
+                            unityOutput.Append("&&");
+                    }
+
+                    Console.WriteLine(unityOutput);
+
+                    Environment.Exit(0);
+                }
 
                 AddText("Done");
                 UnlockControls();
@@ -222,7 +243,7 @@ namespace SpritePacker
             }
         }
 
-        private int GetColumnCount(List<Bitmap> images)
+        private int GetColumnCount(List<SpriteInfo> images)
         {
             int columnCount = 0;
             int size = 0;
@@ -230,17 +251,17 @@ namespace SpritePacker
 
             for (int i = 0; i < images.Count; i++)
             {
-                size += images[i].Width * images[i].Height;
+                size += images[i].image.Width * images[i].image.Height;
             }
 
-            size = (int)Math.Sqrt(size) + ((size / images.Count) / 100);
+            size = (int)Math.Sqrt(size) + ((size / images.Count) / 1000);
 
             for (int i = 0; i < images.Count; i++)
             {
-                if(width + images[i].Width < size)
+                if(width + images[i].image.Width < size)
                 {
                     columnCount += 1;
-                    width += images[i].Width;
+                    width += images[i].image.Width;
                 }
 
             }
@@ -391,23 +412,23 @@ namespace SpritePacker
         }
     }
 
-    public class AtlasItem
+    public class SpriteInfo
     {
-        public int x;
-        public int y;
-        public Vertex vertices;
-
-        public AtlasItem(int x, int y, Vertex vertices)
-        {
-            this.x = x;
-            this.y = y;
-            this.vertices = vertices;
-        }
+        public Bitmap image;
+        public string name;
+        public int width;
+        public int height;
     }
 
     public class Vertex
     {
         public int x;
         public int y;
+
+        public Vertex(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
