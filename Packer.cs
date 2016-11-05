@@ -181,13 +181,13 @@ namespace SpritePacker
                     {
                         itemIndex = 1;
                         width = 0;
-                        height += tallestHeight;
+                        height += tallestHeight + padding;
                         tallestHeight = spriteInfos[i].image.Height;
 
                         width += spriteInfos[i].image.Width + padding;
                     }
 
-                    spriteInfos[i].width = spriteInfos[i].image.Width + padding;
+                    spriteInfos[i].width = spriteInfos[i].image.Width;
                     spriteInfos[i].height = spriteInfos[i].image.Height;
 
                     DrawImage(spriteSheet, spriteInfos[i].image, new Point(width, height));

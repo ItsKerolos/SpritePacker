@@ -111,7 +111,7 @@ public class SpritePackerUnity : EditorWindow
                 if (tallestHeight < info.height)
                     tallestHeight = info.height;
             }
-            else if (itemIndex >= columnCount)
+            else
             {
                 itemIndex = 1;
                 tallestHeights.Add(tallestHeight);
@@ -126,6 +126,7 @@ public class SpritePackerUnity : EditorWindow
         int x = 0;
         int y = currentSize;
         int columnIndex = 0;
+        int padding = 2;
 
         for (int i = 2; i < spriteInfo.Length; i++)
         {
@@ -148,13 +149,14 @@ public class SpritePackerUnity : EditorWindow
                     x += info.width;
                 }
             }
-            else if (itemIndex >= columnCount)
+            else
             {
                 itemIndex = 1;
+                columnIndex += 1;
 
                 if (itemIndex == 1)
                 {
-                    y -= tallestHeights[columnIndex];
+                    y -= tallestHeights[columnIndex] + padding;
                     x = 0;
                 }
                 else
@@ -163,7 +165,16 @@ public class SpritePackerUnity : EditorWindow
                 }
             }
 
-            data.rect = new Rect(x, y + 1, info.width, info.height);
+            if (tallestHeights[columnIndex] > info.height)
+            {
+                int diff = tallestHeights[columnIndex] - info.height;
+                data.rect = new Rect(x, y + diff, info.width, info.height);
+            }
+            else
+            {
+                data.rect = new Rect(x, y, info.width, info.height);
+            }
+
             images.Add(data);
         }
 
