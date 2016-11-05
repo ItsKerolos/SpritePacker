@@ -163,7 +163,7 @@ public class SpritePackerUnity : EditorWindow
                 }
             }
 
-            data.rect = new Rect(x, y, info.width, info.height);
+            data.rect = new Rect(x, y + 1, info.width, info.height);
             images.Add(data);
         }
 
