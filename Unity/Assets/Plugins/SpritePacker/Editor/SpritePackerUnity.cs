@@ -95,8 +95,8 @@ public class SpritePackerUnity : EditorWindow
         spriteSheet.spriteImportMode = SpriteImportMode.Multiple;
 
         int itemIndex = 0;
-        List<int> tallestHeights = new List<int>();
-        int tallestHeight = 0;
+        List<int> highestYs = new List<int>();
+        int highestY = 0;
 
         List<SpriteMetaData> images = new List<SpriteMetaData>();
 
@@ -104,27 +104,28 @@ public class SpritePackerUnity : EditorWindow
         {
             string[] dataArray = spriteInfo[i].Split(';');
             SpriteInfo info = new SpriteInfo(int.Parse(dataArray[1].Split(',')[0]), int.Parse(dataArray[1].Split(',')[1]));
-
+            
             if (itemIndex < columnCount)
             {
                 itemIndex += 1;
-                if (tallestHeight < info.height)
-                    tallestHeight = info.height;
+                if (highestY < info.height)
+                    highestY = info.height;
             }
             else
             {
                 itemIndex = 1;
-                tallestHeights.Add(tallestHeight);
-                tallestHeight = info.height;
+                highestYs.Add(highestY);
+                highestY = info.height;
             }
         }
 
         itemIndex = 0;
-        tallestHeights.Add(tallestHeight);
-        tallestHeight = 0;
+        highestYs.Add(highestY);
+        highestY = 0;
 
         int x = 0;
         int y = currentSize;
+        int lastX = 0;
         int columnIndex = 0;
         int padding = 2;
 
@@ -141,39 +142,27 @@ public class SpritePackerUnity : EditorWindow
 
                 if (itemIndex == 1)
                 {
-                    y -= tallestHeights[columnIndex];
+                    y -= highestYs[columnIndex];
                     x = 0;
                 }
                 else
                 {
-                    x += info.width;
+                    x += lastX + padding;
                 }
             }
             else
             {
                 itemIndex = 1;
                 columnIndex += 1;
+                x = 0;
+                lastX = 0;
 
-                if (itemIndex == 1)
-                {
-                    y -= tallestHeights[columnIndex] + padding;
-                    x = 0;
-                }
-                else
-                {
-                    x += info.width;
-                }
+                y -= highestYs[columnIndex] + padding;
             }
 
-            if (tallestHeights[columnIndex] > info.height)
-            {
-                int diff = tallestHeights[columnIndex] - info.height;
-                data.rect = new Rect(x, y + diff, info.width, info.height);
-            }
-            else
-            {
-                data.rect = new Rect(x, y, info.width, info.height);
-            }
+            int diff = highestYs[columnIndex] - info.height;
+            data.rect = new Rect(x, y + diff, info.width, info.height);
+            lastX = info.width;
 
             images.Add(data);
         }

@@ -176,16 +176,17 @@ namespace SpritePacker
                         if (highestY < spriteInfos[i].image.Height)
                             highestY = spriteInfos[i].image.Height;
 
-                        x += lastX + padding;
+                        if (itemIndex > 1)
+                            x += lastX + padding;
                     }
-                    else if (itemIndex >= columnCount)
+                    else
                     {
                         itemIndex = 1;
                         x = 0;
+                        lastX = 0;
+
                         y += highestY + padding;
                         highestY = spriteInfos[i].image.Height;
-
-                        x += lastX + padding;
                     }
 
                     lastX = spriteInfos[i].image.Width;
