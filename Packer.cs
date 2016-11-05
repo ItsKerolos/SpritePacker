@@ -158,10 +158,11 @@ namespace SpritePacker
 
                 AddText("Creating Sprite Sheet..");
 
-                int width = 0;
-                int height = 0;
+                int x = 0;
+                int lastX = 0;
+                int y = 0;
+                int highestY = 0;
                 int padding = 2;
-                int tallestHeight = 0;
 
                 int columnCount = GetColumnCount(spriteInfos);
                 int itemIndex = 0;
@@ -172,25 +173,26 @@ namespace SpritePacker
                     if (itemIndex < columnCount)
                     {
                         itemIndex += 1;
-                        if (tallestHeight < spriteInfos[i].image.Height)
-                            tallestHeight = spriteInfos[i].image.Height;
+                        if (highestY < spriteInfos[i].image.Height)
+                            highestY = spriteInfos[i].image.Height;
 
-                        width += spriteInfos[i].image.Width + padding;
+                        x += lastX + padding;
                     }
                     else if (itemIndex >= columnCount)
                     {
                         itemIndex = 1;
-                        width = 0;
-                        height += tallestHeight + padding;
-                        tallestHeight = spriteInfos[i].image.Height;
+                        x = 0;
+                        y += highestY + padding;
+                        highestY = spriteInfos[i].image.Height;
 
-                        width += spriteInfos[i].image.Width + padding;
+                        x += lastX + padding;
                     }
 
+                    lastX = spriteInfos[i].image.Width;
                     spriteInfos[i].width = spriteInfos[i].image.Width;
                     spriteInfos[i].height = spriteInfos[i].image.Height;
 
-                    DrawImage(spriteSheet, spriteInfos[i].image, new Point(width, height));
+                    DrawImage(spriteSheet, spriteInfos[i].image, new Rectangle(x, y, spriteInfos[i].width, spriteInfos[i].height));
                 }
 
                 spriteSheet = OptimizeImage(spriteSheet, 1);
@@ -231,10 +233,12 @@ namespace SpritePacker
 
                     Console.WriteLine(unityOutput);
 
+                    AddText("Done.");
                     Environment.Exit(0);
                 }
 
-                AddText("Done");
+                AddText("Done.");
+                System.Diagnostics.Process.Start(savePath);
                 UnlockControls();
             }
             catch (Exception e)
@@ -397,7 +401,7 @@ namespace SpritePacker
             return target;
         }
 
-        private Bitmap DrawImage(Bitmap spriteSheet, Bitmap bmp, Point point)
+        private Bitmap DrawImage(Bitmap spriteSheet, Bitmap bmp, Rectangle rect)
         {
             using (Graphics graphics = Graphics.FromImage(spriteSheet))
             {
@@ -406,7 +410,7 @@ namespace SpritePacker
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                graphics.DrawImage(bmp, point);
+                graphics.DrawImage(bmp, rect);
             }
             return spriteSheet;
         }
