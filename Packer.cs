@@ -176,15 +176,22 @@ namespace SpritePacker
                         if (highestY < spriteInfos[i].image.Height)
                             highestY = spriteInfos[i].image.Height;
 
-                        if (itemIndex > 1)
+                        if (itemIndex == 1)
+                        {
+                            x = padding;
+                            y = padding;
+                        }
+                        else
+                        {
                             x += lastX + padding;
+                        }
                     }
                     else
                     {
                         itemIndex = 1;
-                        x = 0;
                         lastX = 0;
 
+                        x = padding;
                         y += highestY + padding;
                         highestY = spriteInfos[i].image.Height;
                     }
@@ -196,8 +203,8 @@ namespace SpritePacker
                     DrawImage(spriteSheet, spriteInfos[i].image, new Rectangle(x, y, spriteInfos[i].width, spriteInfos[i].height));
                 }
 
-                spriteSheet = OptimizeImage(spriteSheet, 1);
-                int bestSize = Sizes.FirstOrDefault((i) => spriteSheet.Width <= i && spriteSheet.Height <= i);
+                Bitmap t = OptimizeImage(spriteSheet, 1);
+                int bestSize = Sizes.FirstOrDefault((i) => t.Width + padding <= i && t.Height + padding <= i);
 
                 if(bestSize > 1)
                 {

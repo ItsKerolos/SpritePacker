@@ -142,8 +142,8 @@ public class SpritePackerUnity : EditorWindow
 
                 if (itemIndex == 1)
                 {
-                    y -= highestYs[columnIndex];
-                    x = 0;
+                    x = padding;
+                    y -= highestYs[columnIndex] + padding;
                 }
                 else
                 {
@@ -154,9 +154,9 @@ public class SpritePackerUnity : EditorWindow
             {
                 itemIndex = 1;
                 columnIndex += 1;
-                x = 0;
                 lastX = 0;
 
+                x = padding;
                 y -= highestYs[columnIndex] + padding;
             }
 
