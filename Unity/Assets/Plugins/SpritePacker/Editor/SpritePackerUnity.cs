@@ -45,7 +45,7 @@ public class SpritePackerUnity : EditorWindow
         }
     }
 
-    private void Export(string folderPath, string savePath, float scale)
+    public static void Export(string folderPath, string savePath, float scale)
     {
         if(!System.IO.File.Exists(Application.dataPath + "/Plugins/SpritePacker/Editor/SpritePacker.exe"))
         {
