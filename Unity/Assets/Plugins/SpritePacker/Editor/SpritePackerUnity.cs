@@ -164,6 +164,8 @@ public class SpritePackerUnity : EditorWindow
             data.rect = new Rect(x, y + diff, info.width, info.height);
             lastX = info.width;
 
+            data.alignment = 6;
+
             images.Add(data);
         }
 
