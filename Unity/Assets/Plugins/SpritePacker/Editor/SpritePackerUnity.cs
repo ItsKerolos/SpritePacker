@@ -23,11 +23,26 @@ public class SpritePackerUnity : EditorWindow
          "1",
     };
 
+    public string[] Alignment = new string[]
+    {
+        "Center",
+        "Top Left",
+        "Top Center",
+        "Top Right",
+        "Left Center",
+        "Right Center",
+        "Bottom Left",
+        "Bottom Center",
+        "Bottom Right"
+    };
+
     int scaleIndex = 2;
+    static int alignmentIndex = 6;
 
     void OnGUI()
     {
         scaleIndex = EditorGUILayout.Popup("Scale", scaleIndex, Scales);
+        alignmentIndex = EditorGUILayout.Popup("Sprite Alignment", alignmentIndex, Alignment);
 
         if (GUILayout.Button("Export"))
         {
@@ -164,7 +179,7 @@ public class SpritePackerUnity : EditorWindow
             data.rect = new Rect(x, y + diff, info.width, info.height);
             lastX = info.width;
 
-            data.alignment = 6;
+            data.alignment = alignmentIndex;
 
             images.Add(data);
         }
