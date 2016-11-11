@@ -110,8 +110,10 @@ public class SpritePackerUnity : EditorWindow
         spriteSheet.textureFormat = TextureImporterFormat.AutomaticTruecolor;
         #elif UNITY_5_5
         spriteSheet.textureCompression = TextureImporterCompression.Uncompressed;
+        spriteSheet.mipmapEnabled = true;
         #endif
         spriteSheet.spriteImportMode = SpriteImportMode.Multiple;
+        spriteSheet.isReadable = true;
 
         int itemIndex = 0;
         List<int> highestYs = new List<int>();
