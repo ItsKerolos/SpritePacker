@@ -106,7 +106,11 @@ public class SpritePackerUnity : EditorWindow
         int columnCount = int.Parse(spriteInfo[1]);
 
         spriteSheet.maxTextureSize = currentSize;
+        #if UNITY_5_4
         spriteSheet.textureFormat = TextureImporterFormat.AutomaticTruecolor;
+        #elif UNITY_5_5
+        spriteSheet.textureCompression = TextureImporterCompression.Uncompressed;
+        #endif
         spriteSheet.spriteImportMode = SpriteImportMode.Multiple;
 
         int itemIndex = 0;
