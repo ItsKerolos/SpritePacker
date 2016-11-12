@@ -36,8 +36,8 @@ public class SpritePackerUnity : EditorWindow
         "Bottom Right"
     };
 
-    int scaleIndex = 2;
-    static int alignmentIndex = 6;
+    private int scaleIndex = 2;
+    private int alignmentIndex = 6;
 
     void OnGUI()
     {
@@ -56,11 +56,11 @@ public class SpritePackerUnity : EditorWindow
             if (string.IsNullOrEmpty(savePath))
                 return;
 
-            Export(folderPath, savePath, float.Parse(Scales[scaleIndex]));
+            Export(folderPath, savePath, float.Parse(Scales[scaleIndex]), alignmentIndex);
         }
     }
 
-    public static void Export(string folderPath, string savePath, float scale)
+    public static void Export(string folderPath, string savePath, float scale, int alignment)
     {
         if(!System.IO.File.Exists(Application.dataPath + "/Plugins/SpritePacker/Editor/SpritePacker.exe"))
         {
@@ -185,7 +185,7 @@ public class SpritePackerUnity : EditorWindow
             data.rect = new Rect(x, y + diff, info.width, info.height);
             lastX = info.width;
 
-            data.alignment = alignmentIndex;
+            data.alignment = alignment;
 
             images.Add(data);
         }
