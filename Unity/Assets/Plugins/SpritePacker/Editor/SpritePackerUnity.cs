@@ -37,7 +37,7 @@ public class SpritePackerUnity : EditorWindow
     };
 
     private int scaleIndex = 2;
-    private int alignmentIndex = 6;
+    private int alignmentIndex = 0;
 
     void OnGUI()
     {
