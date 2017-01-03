@@ -10,9 +10,9 @@ Pack your images to sprite sheet.
 <h3>Instructions:</h3>
 1- <a href="https://github.com/HerpProject/SpritePacker/releases/latest">Download</a> the .exe or .unitypackage if you use Unity Engine.
 <br/><br/>
-2- Open the .exe or if unity open SpritePacker under Window menu select the best scale and press export choose the folder where you images are and SpritePacker will pack them for you.
+2- Open the .exe (if you use Unity open Window/SpritePacker) then select the best scale and press export choose the folder where you images are and SpritePacker will pack them for you.
 <hr>
 <h3>Credits</h3>
-A <strong>BIG</strong> thank you goes to the great <a href="https://www.facebook.com/semsem707">"Mohamed Khaled"</a> for his efforts to make this works.
+A <strong>BIG THANKS</strong> goes to <a href="https://www.facebook.com/semsem707">"Mohamed Khaled"</a> for his efforts to make this works.
 <hr>
 <h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PNMQS5VVZA9VS">Donate via Paypal</a></h4>
