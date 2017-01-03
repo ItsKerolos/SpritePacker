@@ -39,7 +39,7 @@ public class SpritePackerUnity : EditorWindow
     private int scaleIndex = 2;
     private int alignmentIndex = 0;
 
-    void OnGUI()
+    private void OnGUI()
     {
         scaleIndex = EditorGUILayout.Popup("Scale", scaleIndex, Scales);
         alignmentIndex = EditorGUILayout.Popup("Sprite Alignment", alignmentIndex, Alignment);
