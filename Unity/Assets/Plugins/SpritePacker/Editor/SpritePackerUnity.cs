@@ -10,9 +10,9 @@ public class SpritePackerUnity : EditorWindow
 {
     #if UNITY_EDITOR_WIN
     [MenuItem("Window/SpritePacker")]
-    private static void Init()
+    private static void OpenWindow()
     {
-        GetWindow(typeof(SpritePackerUnity), true, "SpritePacker", true);
+        GetWindow<SpritePackerUnity>("SpritePacker");
     }
     #endif
 
@@ -41,6 +41,8 @@ public class SpritePackerUnity : EditorWindow
 
     private void OnGUI()
     {
+        EditorGUILayout.Space();
+
         scaleIndex = EditorGUILayout.Popup("Scale", scaleIndex, Scales);
         alignmentIndex = EditorGUILayout.Popup("Sprite Alignment", alignmentIndex, Alignment);
 
