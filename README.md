@@ -15,4 +15,4 @@ Pack your images to sprite sheet.
 <h3>Credits</h3>
 A <strong>BIG THANKS</strong> goes to <a href="https://www.facebook.com/semsem707">"Mohamed Khaled"</a> for his efforts to make this works.
 <hr>
-<h4><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PNMQS5VVZA9VS">Donate via Paypal</a></h4>
+<h4><a href="https://paypal.me/ker0olos">Donate via Paypal</a></h4>
