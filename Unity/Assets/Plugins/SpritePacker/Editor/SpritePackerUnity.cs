@@ -1,21 +1,9 @@
-//-----------------------------------------------------------------------
-//    SpritePackerUnity.cs: SpritePacker Unity
-//-----------------------------------------------------------------------
-
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 public class SpritePackerUnity : EditorWindow
 {
-    #if UNITY_EDITOR_WIN
-    [MenuItem("Window/SpritePacker")]
-    private static void OpenWindow()
-    {
-        GetWindow<SpritePackerUnity>("SpritePacker");
-    }
-    #endif
-
     public string[] Scales = new string[]
     {
          "0.25",
@@ -39,6 +27,18 @@ public class SpritePackerUnity : EditorWindow
     private int scaleIndex = 2;
     private int alignmentIndex = 0;
 
+    #region Menu
+
+    [MenuItem("Window/SpritePacker")]
+    private static void OpenWindow()
+    {
+        GetWindow<SpritePackerUnity>("SpritePacker");
+    }
+
+    #endregion
+
+    #region Render GUI
+
     private void OnGUI()
     {
         EditorGUILayout.Space();
@@ -61,6 +61,12 @@ public class SpritePackerUnity : EditorWindow
             Export(folderPath, savePath, float.Parse(Scales[scaleIndex]), alignmentIndex);
         }
     }
+
+    #endregion
+
+    #region API
+
+    #if UNITY_EDITOR_WIN
 
     public static void Export(string folderPath, string savePath, float scale, int alignment)
     {
@@ -108,13 +114,11 @@ public class SpritePackerUnity : EditorWindow
         int columnCount = int.Parse(spriteInfo[1]);
 
         spriteSheet.maxTextureSize = currentSize;
-        #if UNITY_5_4
-        spriteSheet.textureFormat = TextureImporterFormat.AutomaticTruecolor;
-        #elif UNITY_5_5
+
         spriteSheet.textureCompression = TextureImporterCompression.Uncompressed;
         spriteSheet.mipmapEnabled = true;
         spriteSheet.borderMipmap = true;
-        #endif
+
         spriteSheet.spriteImportMode = SpriteImportMode.Multiple;
         spriteSheet.isReadable = true;
 
@@ -197,6 +201,10 @@ public class SpritePackerUnity : EditorWindow
         EditorUtility.SetDirty(spriteSheet);
         spriteSheet.SaveAndReimport();
     }
+
+    #endif
+
+    #endregion
 }
 
 public class SpriteInfo
