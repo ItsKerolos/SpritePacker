@@ -113,6 +113,7 @@ public class SpritePackerUnity : EditorWindow
         #elif UNITY_5_5
         spriteSheet.textureCompression = TextureImporterCompression.Uncompressed;
         spriteSheet.mipmapEnabled = true;
+        spriteSheet.borderMipmap = true;
         #endif
         spriteSheet.spriteImportMode = SpriteImportMode.Multiple;
         spriteSheet.isReadable = true;
