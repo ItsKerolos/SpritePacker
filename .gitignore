@@ -2,12 +2,18 @@
 /obj
 /Release
 /Debug
+/bin
+
 /Unity/.vs
 /Unity/Temp
 /Unity/Library
 /Unity/obj
 /Unity/ProjectSettings
 /Unity/Assets/Plugins/Git
+/Unity/*.sln
+/Unity/*.csproj
+/Unity*.userprefs
+*unity
 
 *.txt
 *.meta
@@ -16,7 +22,4 @@
 *.zip
 *.rar
 *.exe
-*unity
-/Unity/*.sln
-/Unity/*.csproj
-/Unity*.userprefs
+*.pfx

@@ -5,7 +5,7 @@
 <a href="https://github.com/HerpProject/SpritePacker/graphs/traffic"><img src="https://img.shields.io/github/downloads/HerpProject/SpritePacker/total.svg?style=flat-square"></a>
 <br/><br/>
 <h3>Description:</h3>
-Pack your images to sprite sheet.
+Pack your images to spritesheet.
 <hr>
 <h3>Instructions:</h3>
 1- <a href="https://github.com/HerpProject/SpritePacker/releases/latest">Download</a> the .exe or .unitypackage if you use Unity Engine.
