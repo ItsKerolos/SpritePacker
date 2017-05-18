@@ -1,9 +1,5 @@
 <h1>SpritePacker</h1>
-<br/><br/>
-<a href="https://github.com/HerpProject/SpritePacker/releases/latest"><img src="https://img.shields.io/github/release/HerpProject/SpritePacker.svg?style=flat-square"></a>
-<a href="https://github.com/HerpProject/SpritePacker/issues/new"><img src="https://img.shields.io/github/issues/HerpProject/SpritePacker.svg?style=flat-square"></a>
-<a href="https://github.com/HerpProject/SpritePacker/graphs/traffic"><img src="https://img.shields.io/github/downloads/HerpProject/SpritePacker/total.svg?style=flat-square"></a>
-<br/><br/>
+
 <h3>Description:</h3>
 Pack your images to spritesheet.
 <hr>
