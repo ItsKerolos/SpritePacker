@@ -14,5 +14,3 @@ Pack your images to spritesheet.
 <hr>
 <h3>Credits</h3>
 A <strong>BIG THANKS</strong> goes to <a href="https://www.facebook.com/semsem707">"Mohamed Khaled"</a> for his efforts to make this works.
-<hr>
-<h4><a href="https://paypal.me/ker0olos">Donate via Paypal</a></h4>
